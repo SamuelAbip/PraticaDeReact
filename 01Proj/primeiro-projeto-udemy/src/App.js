@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './App.css';
-import Person from "./Person/Person"
+import classes from './App.module.css';
+import Person from "./Person/Person";
 
 const App = props => {
-  const [personsState, setPersonsState] = useState({
+  const [getPersonsState, setPersonsState] = useState({
     persons: [
       { id: "a", name: "Samuel", age: "22" },
       { id: "b", name: "Saulo", age: "25" },
@@ -13,35 +13,37 @@ const App = props => {
   });
 
   const deletePersonHandler = (personIndex) => {
-    const newPersons = [...personsState.persons];
+    const newPersons = [...getPersonsState.persons];
     newPersons.splice(personIndex, 1);
-    setPersonsState({ ...personsState, persons: newPersons });
+    setPersonsState({ ...getPersonsState, persons: newPersons });
   };
 
   const togglePersonsHandler = () => {
-    const doesShow = personsState.showPersons;
+    const doesShow = getPersonsState.showPersons;
     setPersonsState({
-      ...personsState,
+      ...getPersonsState,
       showPersons: !doesShow
     });
   };
 
   const nameChangedHandler = (event, id) => {
-    const personIndex = personsState.persons.findIndex(x => x.id === id);
-    const changedPerson = { ...personsState.persons[personIndex], name: event.target.value };
-    const newPersons = [...personsState.persons];
+    const personIndex = getPersonsState.persons.findIndex(x => x.id === id);
+    const changedPerson = { ...getPersonsState.persons[personIndex], name: event.target.value };
+    const newPersons = [...getPersonsState.persons];
     newPersons[personIndex] = changedPerson;
     setPersonsState({
-      ...personsState,
+      ...getPersonsState,
       persons: newPersons
     });
   };
 
+  let btnClass = "";
   let persons = null;
-  if (personsState.showPersons) {
+
+  if (getPersonsState.showPersons) {
     persons = (
       <div>
-        {personsState.persons.map((person, index) =>
+        {getPersonsState.persons.map((person, index) =>
           <Person
             click={() => deletePersonHandler(index)}
             name={person.name}
@@ -51,13 +53,22 @@ const App = props => {
         )}
       </div>
     );
+    btnClass = classes.Red;
+  };
+
+  let assignedClasses = [];
+  if (getPersonsState.persons.length <= 2) {
+    assignedClasses.push(classes.red);
+  };
+  if (getPersonsState.persons.length <= 1) {
+    assignedClasses.push(classes.bold);
   };
 
   return (
-    <div className="App">
+    <div className={classes.App}>
       <h1>This is a list of people!</h1>
-      {console.log(personsState)}
-      <button onClick={() => togglePersonsHandler()}>Show persons: </button>
+      <p className={assignedClasses.join(" ")}>I'm really working!</p>
+      <button className={btnClass} onClick={() => togglePersonsHandler()}>Toggle persons</button>
       {persons}
     </div>
   );
