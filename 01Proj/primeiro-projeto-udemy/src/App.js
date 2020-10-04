@@ -5,49 +5,60 @@ import Person from "./Person/Person"
 const App = props => {
   const [personsState, setPersonsState] = useState({
     persons: [
-      { name: "Samuel", age: 22 },
-      { name: "Saulo", age: 25 },
-      { name: "Ingrid", age: 25 }
-    ]
+      { id: "a", name: "Samuel", age: "22" },
+      { id: "b", name: "Saulo", age: "25" },
+      { id: "c", name: "Ingrid", age: "25" }
+    ],
+    showPersons: false
   });
 
-  const switchNameHandler = (newName) => {
+  const deletePersonHandler = (personIndex) => {
+    const newPersons = [...personsState.persons];
+    newPersons.splice(personIndex, 1);
+    setPersonsState({ ...personsState, persons: newPersons });
+  };
+
+  const togglePersonsHandler = () => {
+    const doesShow = personsState.showPersons;
     setPersonsState({
-      persons: [
-        { name: newName, age: 22 },
-        { name: "Saulo", age: 25 },
-        { name: "Ingrid", age: 55 }
-      ]
+      ...personsState,
+      showPersons: !doesShow
     });
   };
 
-  const nameChangedHandler = (event) => {
+  const nameChangedHandler = (event, id) => {
+    const personIndex = personsState.persons.findIndex(x => x.id === id);
+    const changedPerson = { ...personsState.persons[personIndex], name: event.target.value };
+    const newPersons = [...personsState.persons];
+    newPersons[personIndex] = changedPerson;
     setPersonsState({
-      persons: [
-        { name: "Samuel", age: 22 },
-        { name: event.target.value, age: 25 },
-        { name: "Ingrid", age: 25 }
-      ]
+      ...personsState,
+      persons: newPersons
     });
   };
-  
+
+  let persons = null;
+  if (personsState.showPersons) {
+    persons = (
+      <div>
+        {personsState.persons.map((person, index) =>
+          <Person
+            click={() => deletePersonHandler(index)}
+            name={person.name}
+            age={person.age}
+            key={person.id}
+            changed={(event) => nameChangedHandler(event, person.id)} />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="App">
-      <h1>Hi, I'm a React App.</h1>
-      <p>This is really working!</p>
-      <button
-        onClick={() => switchNameHandler("Samuel Abip")}>Switch Name</button>
-      <Person
-        name={personsState.persons[0].name}
-        age={personsState.persons[0].age} />
-      <Person
-        name={personsState.persons[1].name}
-        age={personsState.persons[1].age}
-        click={switchNameHandler.bind(this, "Samuel!")}
-        changed={nameChangedHandler} >My Hobbies: Gaming</Person>
-      <Person
-        name={personsState.persons[2].name}
-        age={personsState.persons[2].age} />
+      <h1>This is a list of people!</h1>
+      {console.log(personsState)}
+      <button onClick={() => togglePersonsHandler()}>Show persons: </button>
+      {persons}
     </div>
   );
 }
