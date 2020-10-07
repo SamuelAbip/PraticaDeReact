@@ -1,12 +1,7 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Person from "./Person/Person";
 
-class Persons extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log("[Persons.js] shouldComponentUpdate");
-    return true;
-  };
-
+class Persons extends PureComponent {
   getSnapshotBeforeUpdate(prevProps, prevState) {
     console.log("[Persons.js] getSnapshotBeforeUpdate");
     return { message: "Snapshot!" };
@@ -17,8 +12,12 @@ class Persons extends Component {
     console.log(snapshot);
   };
 
+  componentWillUnmount() {
+    console.log("[Persons.js] componentWillUnmount");
+  };
+
   render() {
-    console.log(" [Persons.js] rendering...");
+    console.log("[Persons.js] rendering...");
     return this.props.persons.map((person, index) => {
       return (
         <Person
@@ -27,6 +26,7 @@ class Persons extends Component {
           age={person.age}
           key={person.id}
           changed={event => this.props.changed(event, person.id)}
+          isAuth={this.props.isAuthenticated}
         />
       );
     });
