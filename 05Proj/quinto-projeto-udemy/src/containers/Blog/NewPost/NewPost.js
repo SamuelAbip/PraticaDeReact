@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import './NewPost.css';
 import axios from "axios";
+import './NewPost.css';
 
 class NewPost extends Component {
   state = {
     title: '',
     content: '',
-    author: 'Max'
+    author: 'Samuel',
   }
+
+  componentDidMount() {
+    console.log(this.props);
+  };
 
   postDataHandler = () => {
     const data = {
@@ -16,7 +20,10 @@ class NewPost extends Component {
       author: this.state.author
     };
     axios.post("/posts", data)
-      .then(response => { console.log(response); });
+      .then(response => {
+        console.log(response);
+        this.props.history.replace("/posts");
+      });
   };
 
   render() {
