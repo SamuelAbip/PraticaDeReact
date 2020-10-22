@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import { Route, NavLink, Switch, Redirect } from "react-router-dom";
 import Posts from "./Posts/Posts";
 import AsyncComponent from "../../hoc/AsyncComponent";
