@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
+import Test from "./test";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App appTitle="Person Manager" />
+    <Test/>
   </React.StrictMode>,
   document.getElementById('root')
 );
