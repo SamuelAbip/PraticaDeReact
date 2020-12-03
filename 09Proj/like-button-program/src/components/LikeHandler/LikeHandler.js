@@ -8,10 +8,12 @@ function LikeHandler() {
 
   useEffect(() => {
     firebase.database().ref("likeNumbers").once('value').then(function (snapshot) {
-    var username = (snapshot.val()) || 'Anonymous';
-    setLikeNumbers(username);
-  })}, []);
-
+      var username = (snapshot.val()) || 'Anonymous';
+      setLikeNumbers(username);
+      const token = (localStorage.getItem("likedState"))?.toLowerCase() === "true" ? true : false;
+      setLikeState({ liked: token });
+    })
+  }, []);
 
   function onLikeHandler() {
     setLikeState({ liked: true });
