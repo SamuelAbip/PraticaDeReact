@@ -10,8 +10,8 @@ const Order = (props) => {
         name: ingredientName,
         amount: props.ingredients[ingredientName]
       });
-  }
-
+  };
+  
   const ingredientOutput = ingredients.map(ig => {
     return <span
       style={{
